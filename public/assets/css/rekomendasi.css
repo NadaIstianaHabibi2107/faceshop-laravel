@@ -1,0 +1,85 @@
+/* HEADER */
+.rekom-header {
+  text-align: center;
+  padding: 40px 20px;
+  background: linear-gradient(to right, #850E35,#fff, #d9a3b1);
+}
+
+.rekom-header h1 {
+  color: #e65b7a;
+  font-size: 30px;
+}
+
+.rekom-header p {
+  color: #555;
+}
+
+/* CONTENT */
+.rekom-content {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 30px;
+  padding: 40px 60px;
+}
+
+/* PROFIL */
+.profile-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  height: fit-content;
+}
+
+.profile-card h4 {
+  color: #999;
+  margin-bottom: 4px;
+}
+
+.profile-card h3 {
+  color: #e65b7a;
+  margin-bottom: 16px;
+}
+
+.profile-card ul {
+  list-style: none;
+}
+
+.profile-card li {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+/* TAG */
+.tag {
+  background: #ffd1dc;
+  color: #e65b7a;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+.tag.danger {
+  background: #ffdede;
+  color: #c0392b;
+}
+
+/* PRODUK */
+.rekom-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.btn-filter {
+  border: 1px solid #ccc;
+  background: #fff;
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+
+.rekom-produk .product-list {
+  grid-template-columns: repeat(2, 1fr);
+}

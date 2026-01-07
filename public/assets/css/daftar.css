@@ -1,0 +1,117 @@
+/* SECTION */
+.daftar-section {
+  position: relative;
+  min-height: 100vh;
+  padding: 60px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* BACKGROUND */
+.daftar-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgba(255,247,243,0.88), rgba(255,247,243,0.88)),
+    url("assets/hero-bg.png");
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+
+.daftar-wrapper {
+  position: relative;
+  z-index: 1;
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+}
+
+.daftar-wrapper h1 {
+  color: #e65b7a;
+  font-size: 30px;
+}
+
+.subtitle {
+  color: #666;
+  margin-bottom: 30px;
+}
+
+/* CARD */
+.daftar-card {
+  background: #fffaf5;
+  border-radius: 18px;
+  padding: 28px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.daftar-card h2 {
+  color: #7a1430;
+  margin-bottom: 20px;
+}
+
+.daftar-card h3 {
+  margin: 16px 0;
+  color: #7a1430;
+  font-size: 16px;
+}
+
+.daftar-card hr {
+  border: none;
+  border-top: 1px solid #eac0cb;
+  margin: 18px 0;
+}
+
+/* FORM */
+.daftar-card form {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.daftar-card label {
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.daftar-card input,
+.daftar-card select {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 14px;
+  font-size: 14px;
+}
+
+.daftar-card input:focus,
+.daftar-card select:focus {
+  outline: none;
+  border-color: #e65b7a;
+}
+
+/* BUTTON */
+.btn-daftar {
+  background: linear-gradient(to right, #f06b83, #e65b7a);
+  border: none;
+  color: #fff;
+  padding: 12px;
+  border-radius: 20px;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 16px;
+}
+
+/* LINK LOGIN */
+.login-text {
+  margin-top: 16px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.login-text a {
+  color: #e65b7a;
+  text-decoration: none;
+  font-weight: 500;
+}

@@ -1,0 +1,66 @@
+/* HEADER */
+.produk-header {
+  text-align: center;
+  padding: 40px 20px;
+  background: linear-gradient(to right, #850E35,#fff, #d9a3b1);
+}
+
+.produk-header h1 {
+  color: #850E35;
+  font-size: 32px;
+}
+
+.produk-header p {
+  color: #555;
+}
+
+/* SEARCH & FILTER */
+.produk-tools {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px 60px;
+}
+
+.search-box {
+  background: #fff;
+  border-radius: 20px;
+  padding: 8px 14px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  margin-left: 6px;
+}
+
+.btn-filter {
+  border: 1px solid #ccc;
+  background: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+}
+
+/* SECTION */
+.produk-section {
+  padding: 30px 60px;
+}
+
+.section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-title h2 {
+  font-size: 22px;
+}
+
+/* GRID */
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
