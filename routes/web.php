@@ -1,7 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RegisterController;
 
+Route::get('/daftar', function () {
+    return view('daftar');
+})->name('daftar.show');
+Route::post('/daftar', [RegisterController::class, 'store'])->name('daftar.store');
 Route::get('/', function () {
     return view('index');
 });
@@ -13,7 +18,4 @@ Route::get('/rekomendasi', function () {
 });
 Route::get('/login', function () {
     return view('login');
-});
-Route::get('/daftar', function () {
-    return view('daftar');
 });

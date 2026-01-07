@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,103 +12,84 @@
   <!-- CSS KHUSUS DAFTAR -->
   <link rel="stylesheet" href="/assets/css/daftar.css">
 </head>
+
 <body>
 
-<!-- NAVBAR -->
- @include('layout.navbar')
-    <!-- NAVBAR -->
+  <!-- NAVBAR -->
+  @include('layout.navbar')
+  <!-- NAVBAR -->
 
-<!-- DAFTAR SECTION -->
-<section class="daftar-section">
-  <div class="daftar-wrapper">
+  <!-- DAFTAR SECTION -->
+  <section class="daftar-section">
+    <div class="daftar-wrapper">
 
-    <h1>Selamat Datang di FaceShop</h1>
-    <p class="subtitle">Masuk untuk melihat rekomendasi personal</p>
+      <h1>Selamat Datang di FaceShop</h1>
+      <p class="subtitle">Masuk untuk melihat rekomendasi personal</p>
 
-    <div class="daftar-card">
-      <h2>Daftar</h2>
+      <div class="daftar-card">
+        <h2>Daftar</h2>
 
-      <form>
-        <label>Nama Lengkap</label>
-        <input type="text" placeholder="Masukkan nama lengkap">
+        <form action="/daftar" method="POST">
+          @csrf
 
-        <label>Email</label>
-        <input type="email" placeholder="Masukkan email">
+          <label>Nama Lengkap</label>
+          <input type="text" name="name" placeholder="Masukkan nama lengkap" required>
 
-        <label>Password</label>
-        <input type="password" placeholder="Masukkan password">
+          <label>Email</label>
+          <input type="email" name="email" placeholder="Masukkan email" required>
 
-        <label>Alamat</label>
-        <input type="text" placeholder="Masukkan alamat">
+          <label>Password</label>
+          <input type="password" name="password" placeholder="Masukkan password" required>
 
-        <label>Nomor Telepon</label>
-        <input type="text" placeholder="Masukkan nomor telepon">
+          <label>Alamat</label>
+          <input type="text" name="address" placeholder="Masukkan alamat" required>
 
-        <hr>
+          <label>Nomor Telepon</label>
+          <input type="number" name="phone" placeholder="Masukkan nomor telepon" required>
 
-        <h3>Profil kecantikan</h3>
+          <hr>
+          <h3>Profil kecantikan</h3>
 
-        <label>Jenis Kulit</label>
-       <select>
-          <option value="">Pilih jenis kulit</option>
-          <option>Normal</option>
-          <option>Berminyak</option>
-          <option>Kering</option>
-          <option>Sensitif</option>
-          <option>Kombinasi</option>
-        </select>
+          <label>Jenis Kulit</label>
+          <select name="skin_type" required>
+            <option value="">Pilih jenis kulit</option>
+            <option value="Normal">Normal</option>
+            <option value="Berminyak">Berminyak</option>
+          </select>
 
-        <label>Warna Kulit</label>
-        <select>
-          <option value="">Pilih warna kulit</option>
-          <option>Fair/Putih</option>
-          <option>Light/Kuning langsat</option>
-          <option>Medium/Sawo matang</option>
-          <option>Tan/Cokelat</option>
-          <option>Dark/Gelap / hitam</option>
-        </select>
+          <label>Warna Kulit</label>
+          <select name="skin_tone" required>
+            <option value="">Pilih warna kulit</option>
+            <option value="Fair">Fair/Putih</option>
+          </select>
 
-        <label>Undertone</label>
-        <select>
-          <option value="">Pilih undertone</option>
-          <option>Warm (kuning / keemasan)</option>
-          <option>Neutral (campuran)</option>
-          <option>Cool (merah muda / kebiruan)</option>
-        </select>
+          <label>Undertone</label>
+          <select name="undertone" required>
+            <option value="Warm">Warm</option>
+          </select>
 
-        <label>Masalah Kulit</label>
-        <select>
-          <option value="">Pilih masalah kulit</option>
-          <option>Jerawat</option>
-          <option>Bekas jerawat / noda hitam</option>
-          <option>Kulit kusam</option>
-          <option>Pori-pori besar</option>
-          <option>Tidak ada</option>
-        </select>
+          <label>Masalah Kulit</label>
+          <select name="skin_problem" required>
+            <option value="Jerawat">Jerawat</option>
+          </select>
 
-        <label>Warna Pembuluh Darah</label>
-        <select>
-          <option value="">Pilih warna pembuluh darah</option>
-          <option>Biru / Ungu</option>
-          <option>Hijau</option>
-          <option>Campuran</option>
-        </select>
+          <label>Warna Pembuluh Darah</label>
+          <select name="vein_color" required>
+            <option value="Biru">Biru / Ungu</option>
+          </select>
 
-        <button type="submit" class="btn-daftar">Daftar</button>
-      </form>
+          <button type="submit" class="btn-daftar">Daftar</button>
+        </form>
+        <p class="login-text">
+          Sudah punya akun?
+          <a href="/login">Masuk sekarang</a>
+        </p>
+      </div>
 
-      <p class="login-text">
-        Sudah punya akun?
-        <a href="/login">Masuk sekarang</a>
-      </p>
     </div>
+  </section>
 
-  </div>
-</section>
 
-<!-- FOOTER -->
-<div id="footer"></div>
-
-<script src="script.js"></script>
 </body>
+
 </html>
