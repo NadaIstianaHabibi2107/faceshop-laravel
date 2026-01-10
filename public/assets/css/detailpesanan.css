@@ -1,0 +1,59 @@
+/* LINK */
+.order-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* CARD PESANAN */
+.order-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    margin: 0 auto 30px auto;
+    max-width: 1000px;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+/* HEADER */
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* STATUS */
+.order-status {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.status-menunggu {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-mengirim {
+    background: #cce5ff;
+    color: #004085;
+}
+
+.status-terkirim {
+    background: #d4edda;
+    color: #155724;
+}
+
+/* DIVIDER */
+.order-divider {
+    margin: 16px 0;
+    border-top: 1px solid #eee;
+}
+
+/* FOOTER */
+.order-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+}
+

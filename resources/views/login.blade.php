@@ -5,20 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login | Faceshop</title>
 
-  <!-- CSS GLOBAL -->
   <link rel="stylesheet" href="/assets/css/style.css" />
-
-  <!-- CSS KHUSUS LOGIN -->
   <link rel="stylesheet" href="/assets/css/login.css">
 </head>
 <body>
 
+@include('layout.navbar')
 
-<!-- NAVBAR -->
- @include('layout.navbar')
-    <!-- NAVBAR -->
-
-<!-- LOGIN SECTION -->
 <section class="login-section">
   <div class="login-wrapper">
 
@@ -28,12 +21,14 @@
     <div class="login-card">
       <h2>Login</h2>
 
-      <form>
+      <form method="POST" action="{{ route('login.process') }}">
+        @csrf
+
         <label>Email</label>
-        <input type="email" placeholder="Masukkan email">
+        <input type="email" name="email" required>
 
         <label>Password</label>
-        <input type="password" placeholder="Masukkan password">
+        <input type="password" name="password" required>
 
         <button type="submit" class="btn-login-main">Login</button>
       </form>
@@ -47,9 +42,7 @@
   </div>
 </section>
 
-<!-- FOOTER -->
-<div id="footer"></div>
+@include('layout.footer')
 
-<script src="script.js"></script>
 </body>
 </html>

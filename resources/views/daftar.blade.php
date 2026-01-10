@@ -29,7 +29,17 @@
       <div class="daftar-card">
         <h2>Daftar</h2>
 
-        <form action="/daftar" method="POST">
+        @if ($errors->any())
+  <div style="background:#ffe0e0;padding:10px;margin-bottom:15px;">
+    <ul>
+      @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+      @endforeach
+    </ul>
+  </div>
+@endif
+
+        <form action="{{ route('daftar.store') }}" method="POST">
           @csrf
 
           <label>Nama Lengkap</label>
@@ -45,7 +55,7 @@
           <input type="text" name="address" placeholder="Masukkan alamat" required>
 
           <label>Nomor Telepon</label>
-          <input type="number" name="phone" placeholder="Masukkan nomor telepon" required>
+          <input type="text" name="phone" placeholder="Masukkan nomor telepon" required>
 
           <hr>
           <h3>Profil kecantikan</h3>

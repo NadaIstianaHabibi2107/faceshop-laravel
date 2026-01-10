@@ -1,20 +1,20 @@
-/* HEADER */
+/* ================= HEADER ================= */
 .produk-header {
   text-align: center;
-  padding: 40px 20px;
-  background: linear-gradient(to right, #850E35,#fff, #d9a3b1);
+  padding: 50px 20px;
+  background: linear-gradient(to right, #f7c6d0, #fbe3e8);
 }
 
 .produk-header h1 {
-  color: #850E35;
   font-size: 32px;
+  color: #e65b7a;
 }
 
 .produk-header p {
-  color: #555;
+  color: #666;
 }
 
-/* SEARCH & FILTER */
+/* ================= TOOLS ================= */
 .produk-tools {
   display: flex;
   justify-content: space-between;
@@ -24,8 +24,8 @@
 
 .search-box {
   background: #fff;
+  padding: 10px 16px;
   border-radius: 20px;
-  padding: 8px 14px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
@@ -35,16 +35,50 @@
   margin-left: 6px;
 }
 
-.btn-filter {
-  border: 1px solid #ccc;
-  background: white;
-  padding: 8px 16px;
-  border-radius: 20px;
+.tools-right {
+  display: flex;
+  gap: 14px;
 }
 
-/* SECTION */
+/* ================= CART ICON ================= */
+.cart-icon {
+  position: relative;
+  background: #fff;
+  padding: 10px 14px;
+  border-radius: 18px;
+  border: 1px solid #ddd;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+#cart-count {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #e65b7a;
+  color: #fff;
+  width: 18px;
+  height: 18px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* FILTER */
+.icon-btn {
+  border: 1px solid #ddd;
+  background: #fff;
+  padding: 10px 16px;
+  border-radius: 18px;
+  cursor: pointer;
+}
+
+/* ================= SECTION ================= */
 .produk-section {
-  padding: 30px 60px;
+  padding: 40px 60px;
 }
 
 .section-title {
@@ -58,9 +92,80 @@
   font-size: 22px;
 }
 
-/* GRID */
+.lihat-semua {
+  color: #e65b7a;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+/* ================= GRID ================= */
 .product-list {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  gap: 28px;
+}
+
+/* ================= CARD ================= */
+.card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 20px;
+  position: relative;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+.card img {
+  width: 100%;
+  margin-bottom: 14px;
+}
+
+.card small {
+  color: #777;
+}
+
+.card h3 {
+  font-size: 16px;
+  color: #850e35;
+  margin: 6px 0;
+}
+
+.card p {
+  font-size: 13px;
+  color: #999;
+}
+
+/* BADGE */
+.badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: #ff9bb0;
+  color: #fff;
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+/* BOTTOM */
+.card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+}
+
+.card-bottom strong {
+  font-size: 15px;
+}
+
+/* ADD BUTTON */
+.btn-add-cart {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: #e65b7a;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
 }

@@ -1,0 +1,111 @@
+.detail-container {
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 0 20px;
+}
+
+/* JUDUL */
+.detail-title {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 40px;
+}
+
+.detail-title span {
+  color: #E26A8D;
+}
+
+/* GRID 2 CARD */
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+/* CARD */
+.detail-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+}
+
+/* TITLE CARD */
+.card-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #8B1E3F;
+  margin-bottom: 24px;
+}
+
+/* ITEM LIST */
+.item-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.item-variant,
+.item-qty {
+  font-size: 14px;
+  color: #777;
+}
+
+.item-price {
+  font-weight: 500;
+  color: #666;
+}
+
+/* TOTAL */
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+/* INFO */
+.info-block {
+  margin-bottom: 24px;
+}
+
+.info-block p {
+  margin-top: 6px;
+  color: #666;
+}
+
+/* STATUS */
+.status-badge {
+  display: inline-block;
+  background: #3B82F6;
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+/* BUTTON */
+.detail-actions {
+  display: flex;
+  justify-content: space-between;
+  margin: 50px auto;
+  max-width: 1000px;
+}
+
+.btn-primary {
+  background: #8B1E3F;
+  color: #fff;
+  padding: 14px 40px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.btn-secondary {
+  background: #FADADD;
+  color: #8B1E3F;
+  padding: 14px 40px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 500;
+}

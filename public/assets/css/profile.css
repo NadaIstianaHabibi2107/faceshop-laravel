@@ -1,0 +1,102 @@
+.profile-section {
+  padding: 50px 60px;
+  background: #fff7f3;
+  min-height: 100vh;
+}
+
+.profile-title {
+  font-size: 28px;
+  color: #7a1430;
+  margin-bottom: 20px;
+}
+
+.profile-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.tab {
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: none;
+  background: #f3e5e9;
+  color: #7a1430;
+  cursor: pointer;
+}
+
+.tab.active {
+  background: #e65b7a;
+  color: white;
+}
+
+.profile-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.profile-card {
+  background: #fffaf5;
+  padding: 24px;
+  border-radius: 18px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+
+.profile-card.full {
+  grid-column: span 2;
+}
+
+.profile-card h2 {
+  margin-bottom: 16px;
+  color: #7a1430;
+}
+
+.profile-card label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.profile-card input,
+.profile-card select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 14px;
+}
+
+.profile-card input:focus,
+.profile-card select:focus {
+  outline: none;
+  border-color: #e65b7a;
+}
+
+.skin-problems {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.skin-problems label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.profile-action {
+  grid-column: span 2;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-save {
+  background: linear-gradient(to right, #f06b83, #e65b7a);
+  border: none;
+  color: white;
+  padding: 12px 28px;
+  border-radius: 24px;
+  cursor: pointer;
+}
