@@ -1,98 +1,141 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Produk | Faceshop</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produk | Faceshop</title>
 
-  <!-- GLOBAL CSS -->
-  <link rel="stylesheet" href="/assets/css/style.css">
-
-  <!-- PRODUK CSS -->
-  <link rel="stylesheet" href="/assets/css/produk.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/produk.css">
 </head>
-<body>
 
+<body>
 @include('layout.navbar')
 
-<!-- HEADER -->
-<section class="produk-header">
-  <h1>Koleksi Produk</h1>
-  <p>Temukan produk kecantikan yang tepat untuk kulitmu</p>
+{{-- HERO --}}
+<section class="rekom-header">
+    <h1>Koleksi Produk</h1>
+    <p>Temukan produk kecantikan yang tepat untuk kulitmu</p>
 </section>
 
-<!-- SEARCH & TOOLS -->
-<section class="produk-tools">
-  <div class="search-box">
-    🔍 <input type="text" placeholder="Cari Produk...">
-  </div>
+<section class="produk-page">
 
-  <div class="tools-right">
-    <a href="/keranjang" class="cart-icon">
-      🛒
-      <span id="cart-count">0</span>
-    </a>
+    {{-- TOOLBAR --}}
+    <div class="produk-toolbar">
+        <div class="search-wrap">
+            <span class="search-ico">🔍</span>
 
-    <button class="icon-btn">⚙️ Filter</button>
-  </div>
-</section>
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Cari nama, brand, kategori (foundation/serum), jenis kulit..."
+                autocomplete="off"
+            />
 
-<!-- REKOMENDASI -->
-<section class="produk-section">
-  <div class="section-title">
-    <h2>Rekomendasi</h2>
-    <a href="/rekomendasi" class="lihat-semua">Lihat Semua →</a>
-  </div>
+            <button type="button" class="search-clear" id="searchClear" aria-label="Clear">
+                ✕
+            </button>
+        </div>
 
-  <div class="product-list">
-
-    <!-- CARD -->
-    @for ($i = 0; $i < 3; $i++)
-    <div class="card">
-      <span class="badge">Best Seller</span>
-
-      <img src="/assets/image/1.png" alt="Produk">
-
-      <small>Skintific</small>
-      <h3>Brightening Serum</h3>
-      <p>Kulit Normal</p>
-
-      <div class="card-bottom">
-        <strong>RP 80.000</strong>
-        <button class="btn-add-cart">🛒</button>
-      </div>
+        <div class="toolbar-actions">
+            <a href="{{ route('keranjang') }}" class="icon-btn" title="Keranjang">🛍️</a>
+            <button type="button" class="filter-btn" title="Filter" disabled>
+                ☰ <span>Filter</span>
+            </button>
+        </div>
     </div>
-    @endfor
 
-  </div>
-</section>
-
-<!-- PRODUK LAINNYA -->
-<section class="produk-section">
-  <h2>Produk Lainnya</h2>
-
-  <div class="product-list">
-
-    @for ($i = 0; $i < 6; $i++)
-    <div class="card">
-      <img src="/assets/image/1.png" alt="Produk">
-
-      <small>Skintific</small>
-      <h3>Brightening Serum</h3>
-      <p>Kulit Normal</p>
-
-      <div class="card-bottom">
-        <strong>RP 80.000</strong>
-        <button class="btn-add-cart">🛒</button>
-      </div>
+    {{-- SECTION: REKOMENDASI --}}
+    <div class="produk-section-head">
+        <h2>Rekomendasi</h2>
+        <a href="#" class="lihat-semua">Lihat Semua →</a>
     </div>
-    @endfor
 
-  </div>
+    <div class="produk-grid" id="produkGrid">
+        @forelse ($products->take(3) as $product)
+            <div class="product-card"
+                 data-name="{{ strtolower($product->name) }}"
+                 data-brand="{{ strtolower($product->brand) }}"
+                 data-category="{{ strtolower($product->category ?? '') }}"
+                 data-skin="{{ strtolower($product->skin_type ?? '') }}">
+
+                <span class="badge {{ $product->badge ?? 'popular' }}">
+                    {{ $product->badge ?? 'Popular' }}
+                </span>
+
+                <a href="{{ route('produk.show', $product->id) }}" class="card-link">
+                    <div class="product-image">
+                        <img src="/assets/image/1.png" alt="{{ $product->name }}">
+                    </div>
+
+                    <div class="product-info">
+                        <small class="brand">{{ $product->brand }}</small>
+                        <h3>{{ $product->name }}</h3>
+                        <p class="skin-type">{{ $product->skin_type ?? 'Kulit Normal' }}</p>
+                        <div class="price">
+                            RP {{ number_format($product->price, 0, ',', '.') }}
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+        @empty
+            <div class="produk-empty" style="grid-column:1/-1;">
+                Produk rekomendasi belum tersedia.
+            </div>
+        @endforelse
+    </div>
+
+    {{-- SECTION: PRODUK LAINNYA --}}
+    <div class="produk-section-head" style="margin-top: 28px;">
+        <h2>Produk Lainnya</h2>
+    </div>
+
+    <div class="produk-grid" id="produkGridAll">
+        @forelse ($products as $product)
+            <div class="product-card"
+                 data-name="{{ strtolower($product->name) }}"
+                 data-brand="{{ strtolower($product->brand) }}"
+                 data-category="{{ strtolower($product->category ?? '') }}"
+                 data-skin="{{ strtolower($product->skin_type ?? '') }}">
+
+                <span class="badge {{ $product->badge ?? 'popular' }}">
+                    {{ $product->badge ?? 'Popular' }}
+                </span>
+
+                <a href="{{ route('produk.show', $product->id) }}" class="card-link">
+                    <div class="product-image">
+                        <img src="/assets/image/1.png" alt="{{ $product->name }}">
+                    </div>
+
+                    <div class="product-info">
+                        <small class="brand">{{ $product->brand }}</small>
+                        <h3>{{ $product->name }}</h3>
+                        <p class="skin-type">{{ $product->skin_type ?? 'Kulit Normal' }}</p>
+                        <div class="price">
+                            RP {{ number_format($product->price, 0, ',', '.') }}
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+        @empty
+            <div class="produk-empty" style="grid-column:1/-1;">
+                Produk belum tersedia.
+            </div>
+        @endforelse
+
+        {{-- Empty state kalau hasil search 0 --}}
+        <div class="produk-empty" id="emptyState" style="grid-column:1/-1; display:none;">
+            Produk tidak ditemukan.
+        </div>
+    </div>
+
 </section>
 
 @include('layout.footer')
 
-<script src="/assets/js/cart.js"></script>
+{{-- Script harus paling bawah --}}
+<script src="/assets/js/produk-search.js"></script>
 </body>
 </html>

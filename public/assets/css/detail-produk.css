@@ -1,0 +1,161 @@
+.detail-container {
+    display: flex;
+    gap: 40px;
+    padding: 60px;
+    background: #fff6ef;
+}
+
+.detail-image {
+    flex: 1;
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.detail-image img {
+    width: 100%;
+    max-width: 350px;
+    display: block;
+    margin: auto;
+}
+
+.detail-info {
+    flex: 1;
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.brand {
+    color: #888;
+}
+
+.product-name {
+    color: #b03060;
+    margin: 10px 0;
+}
+
+.section-title {
+    margin-top: 20px;
+    color: #ff8fa3;
+}
+
+.description {
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.shade-select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.price-qty {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.price {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.qty-control {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.qty-control button {
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    border: none;
+    background: #f0f0f0;
+    font-size: 18px;
+}
+
+.qty-control input {
+    width: 40px;
+    text-align: center;
+    border: none;
+    font-size: 16px;
+}
+
+/* ==================================
+   BUTTON STYLE (CART + TRYON)
+================================== */
+.btn-cart,
+.btn-tryon{
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  padding: 15px 16px;
+  border-radius: 999px;
+
+  font-size: 16px;
+  font-weight: 800;
+
+  cursor: pointer;
+  user-select: none;
+
+  text-decoration: none;   /* ✅ hilangin garis bawah link */
+  outline: none;
+}
+
+/* cart */
+.btn-cart{
+  background: #f36c85;
+  color: #fff;
+  border: none;
+  box-shadow: 0 10px 18px rgba(243,108,133,.22);
+  margin-bottom: 12px;
+}
+.btn-cart:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 14px 24px rgba(243,108,133,.26);
+}
+.btn-cart:active{
+  transform: translateY(0px);
+}
+
+/* tryon (link jadi button) */
+.btn-tryon{
+  background: #fde2d9;
+  color: #b03060;
+  border: 1px solid rgba(176,48,96,.12);
+  box-shadow: 0 10px 18px rgba(0,0,0,.06);
+}
+
+/* ✅ pastikan link tidak pernah bergaris bawah */
+.btn-tryon:hover,
+.btn-tryon:focus,
+.btn-tryon:active,
+.btn-tryon:visited{
+  text-decoration: none;
+  color: #b03060;
+}
+
+.btn-tryon:hover{
+  transform: translateY(-1px);
+  background: rgba(243,108,133,.14);
+  border-color: rgba(176,48,96,.18);
+}
+.btn-tryon:active{
+  transform: translateY(0px);
+}
+
+/* ✅ state disabled (kamu pakai pointer-events none + opacity)
+   ini biar kelihatan memang disabled */
+.btn-tryon[style*="pointer-events:none"]{
+  filter: grayscale(.2);
+}

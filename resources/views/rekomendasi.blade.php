@@ -5,92 +5,89 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rekomendasi | Faceshop</title>
 
-  <!-- CSS GLOBAL -->
   <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-
-  <!-- CSS KHUSUS REKOMENDASI -->
-
   <link rel="stylesheet" href="{{ asset('assets/css/rekomendasi.css') }}">
 </head>
-<body>
+<body class="faceshop-body">
 
-<!-- NAVBAR -->
- @include('layout.navbar')
-    <!-- NAVBAR -->
-  
+@include('layout.navbar')
 
-<!-- HEADER -->
 <section class="rekom-header">
-  <h1>Rekomendasi Personal Untukmu</h1>
-  <p>Berdasarkan jawaban quiz-mu, kami menemukan produk yang paling cocok</p>
+  <div class="rekom-header-inner">
+    <h1>Rekomendasi Personal Untukmu</h1>
+    <p>Berdasarkan tone & undertone kamu, kami pilih produk yang paling cocok.</p>
+  </div>
 </section>
 
-<!-- CONTENT -->
-<section class="rekom-content">
+<section class="rekom-page">
 
-  <!-- PROFIL KULIT -->
-  <aside class="profile-card">
-    <h4>Profil Kulit Kamu</h4>
-    <h3>Nada Istiana Habibi</h3>
-
-    <ul>
-      <li><span>Jenis Kulit</span><span class="tag">Kombinasi</span></li>
-      <li><span>Skintone</span><span class="tag">Tan</span></li>
-      <li><span>Undertone</span><span class="tag">Netral</span></li>
-      <li><span>Fokus Perawatan</span><span class="tag">Brightening</span></li>
-      <li><span>Sensitivitas</span><span class="tag danger">Tidak</span></li>
-    </ul>
-  </aside>
-
-  <!-- PRODUK -->
-  <div class="rekom-produk">
-    <div class="rekom-title">
-      <h2>Produk yang Direkomendasikan</h2>
-      <button class="btn-filter">Filter</button>
+  {{-- INFO MATCH / EMPTY --}}
+  @if(!$tone || !$undertone)
+    <div class="rekom-alert">
+      <div class="rekom-alert-text">
+        <b>Profil tone & undertone belum lengkap</b>
+        <p>Lengkapi dulu profil supaya rekomendasi bisa muncul.</p>
+      </div>
+      <a href="{{ route('profile') }}" class="btn-primary-mini">Lengkapi Profil</a>
     </div>
-
-    <div class="product-list">
-      <!-- CARD -->
-      <div class="card">
-        <span class="badge">Popular</span>
-        <img src="assets/1.png">
-        <h4>Skintific</h4>
-        <h3>Brightening Serum</h3>
-        <p>Kulit Normal</p>
-        <strong>RP 80.000</strong>
+  @else
+    <div class="rekom-top">
+      <div>
+        <h2>Produk yang Direkomendasikan</h2>
+        <div class="match-pill">
+          Match: <b>{{ $tone }}</b> • <b>{{ $undertone }}</b>
+        </div>
       </div>
 
-      <div class="card">
-        <span class="badge new">New</span>
-        <img src="assets/1.png">
-        <h4>Skintific</h4>
-        <h3>Brightening Serum</h3>
-        <p>Kulit Normal</p>
-        <strong>RP 80.000</strong>
-      </div>
-
-      <div class="card">
-        <img src="assets/1.png">
-        <h4>Skintific</h4>
-        <h3>Brightening Serum</h3>
-        <p>Kulit Normal</p>
-        <strong>RP 80.000</strong>
-      </div>
-
-      <div class="card">
-        <img src="assets/1.png">
-        <h4>Skintific</h4>
-        <h3>Brightening Serum</h3>
-        <p>Kulit Normal</p>
-        <strong>RP 80.000</strong>
-      </div>
+      <button class="btn-lite" type="button" disabled>Filter</button>
     </div>
+  @endif
+
+  {{-- GRID --}}
+  <div class="rekom-grid">
+    @forelse($recommendations as $shade)
+      <div class="rekom-card">
+        <span class="badge">Recommended</span>
+
+        <a href="{{ route('produk.show', $shade->product->id) }}" class="rekom-link">
+          <div class="rekom-img">
+            <img src="/assets/image/1.png" alt="{{ $shade->product->name }}">
+          </div>
+
+          <div class="rekom-body">
+            <small class="brand">{{ $shade->product->brand }}</small>
+            <h3 class="name">{{ $shade->product->name }}</h3>
+
+            <div class="shade-line">
+              <span class="dot" style="background: {{ $shade->hex_color ?? '#ddd' }}"></span>
+              <div class="shade-text">
+                <b>{{ $shade->shade_name }}</b>
+                <small>{{ $shade->tone }} • {{ $shade->undertone }}</small>
+              </div>
+            </div>
+
+            <div class="price">
+              Rp {{ number_format($shade->product->price, 0, ',', '.') }}
+            </div>
+
+            <div class="cta">Lihat Detail →</div>
+          </div>
+        </a>
+      </div>
+    @empty
+      @if($tone && $undertone)
+        <div class="rekom-empty">
+          <b>Tidak ada rekomendasi yang cocok.</b>
+          <p>Coba ubah tone / undertone di profil untuk melihat hasil lain.</p>
+          <a href="{{ route('profile') }}" class="btn-primary-mini">Ubah Profil</a>
+        </div>
+      @endif
+    @endforelse
   </div>
 
 </section>
 
-<!-- FOOTER -->
-<div id="footer"></div>
+@include('layout.footer')
 
 </body>
 </html>

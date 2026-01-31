@@ -17,17 +17,19 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'address',
-        'phone',
-        'skin_type',
-        'skin_tone',
-        'undertone',
-        'skin_problem',
-        'vein_color'
-    ];
+    'name',
+    'email',
+    'password',
+    'address',
+    'phone',
+    'skin_type',
+    'skin_tone',
+    'undertone',
+    'skin_problem',
+    'vein_color',
+    'role'
+];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -51,4 +53,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function profile()
+    {
+        return $this->hasOne(\App\Models\UserProfile::class);
+    }
+
 }

@@ -2,10 +2,15 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Keranjang Belanja | Faceshop</title>
 
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/keranjang.css">
+
+    {{-- ICON --}}
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
@@ -13,6 +18,7 @@
 @include('layout.navbar')
 
 <section class="cart-section">
+
     <h1 class="cart-title">Keranjang <span>Belanja</span></h1>
 
     <div class="cart-container">
@@ -20,49 +26,161 @@
         {{-- LIST PRODUK --}}
         <div class="cart-list">
 
-            {{-- ITEM --}}
-            <div class="cart-item" data-price="80000">
-                <img src="/assets/image/serum.png" alt="Produk">
+            @forelse($items as $index => $item)
+                <div class="cart-item">
 
-                <div class="cart-info">
-                    <small>Skintific</small>
-                    <h4>Brightening Serum</h4>
-                    <p>Kulit Normal</p>
+                    {{-- tombol hapus (fix posisi biar ga rusak) --}}
+                    <form action="{{ route('keranjang.hapus') }}" method="POST" class="btn-delete">
+                        @csrf
+                        <input type="hidden" name="index" value="{{ $index }}">
+                        <button type="submit" title="Hapus item">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </form>
 
-                    <div class="qty-control">
-                        <button class="qty-btn minus">−</button>
-                        <span class="qty">1</span>
-                        <button class="qty-btn plus">+</button>
+                    <div class="cart-thumb">
+                        <img src="/assets/image/1.png" alt="{{ $item['product']->name }}">
                     </div>
-                </div>
 
-                <div class="cart-price">
-                    <p class="price-unit">Rp 80.000</p>
-                    <p class="price-total">Rp 80.000</p>
+                    <div class="cart-info">
+                        <small class="cart-brand">{{ $item['product']->brand }}</small>
+                        <h4 class="cart-name">{{ $item['product']->name }}</h4>
+
+                        <div class="cart-meta">
+                            <span class="meta-pill">
+                                Jenis: {{ $item['product']->category ?? '-' }}
+                            </span>
+                            <span class="meta-pill">
+                                Kulit: {{ $item['product']->skin_type ?? '-' }}
+                            </span>
+                        </div>
+
+                        {{-- SHADE --}}
+                        <div class="shade-row">
+                            <span class="shade-label">Shade:</span>
+
+                            @if(!empty($item['shade']))
+                                <span class="shade-name">{{ $item['shade']->shade_name }}</span>
+                                @if(!empty($item['shade']->hex_color))
+                                    <span class="shade-dot" style="background: {{ $item['shade']->hex_color }};"></span>
+                                @endif
+                            @else
+                                <span class="shade-name">{{ $item['shade_text'] ?? '-' }}</span>
+                            @endif
+                        </div>
+
+                        {{-- QTY --}}
+                        <div class="qty-control">
+                            <form action="{{ route('keranjang.update') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="index" value="{{ $index }}">
+                                <input type="hidden" name="qty" value="{{ max(1, $item['qty'] - 1) }}">
+                                <button type="submit" class="qty-btn" title="Kurangi">−</button>
+                            </form>
+
+                            <span class="qty">{{ $item['qty'] }}</span>
+
+                            <form action="{{ route('keranjang.update') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="index" value="{{ $index }}">
+                                <input type="hidden" name="qty" value="{{ $item['qty'] + 1 }}">
+                                <button type="submit" class="qty-btn" title="Tambah">+</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="cart-price">
+                        <div class="price-label">Subtotal</div>
+                        <div class="price-total">
+                            Rp {{ number_format($item['subtotal'],0,',','.') }}
+                        </div>
+
+                        <div class="price-unit">
+                            Rp {{ number_format($item['product']->price,0,',','.') }} / item
+                        </div>
+                    </div>
+
                 </div>
-            </div>
+            @empty
+                <div class="cart-empty">
+                    <h3>Keranjang masih kosong</h3>
+                    <p>Yuk mulai belanja produk favoritmu.</p>
+                    <a href="{{ route('produk') }}" class="btn-primary">Lihat Produk</a>
+                </div>
+            @endforelse
 
         </div>
 
-        {{-- RINGKASAN --}}
+        {{-- RINGKASAN (MODEL STRUK) --}}
+        @php
+          $lineItems = count($items);
+          $totalQty  = collect($items)->sum('qty');
+        @endphp
+
         <div class="cart-summary">
             <h3>Ringkasan Pesanan</h3>
 
-            <p>Subtotal <span id="subtotal">Rp 80.000</span></p>
-            <p>Ongkos Kirim <span>Rp 10.000</span></p>
+            <div class="receipt">
 
-            <hr>
+                <div class="r-head">
+                    <div>
+                        <div class="r-store">FACESHOP</div>
+                        <div class="r-date">{{ now()->format('d M Y, H:i') }}</div>
+                    </div>
+                    <div class="r-badge">Cart</div>
+                </div>
 
-            <p class="total">TOTAL <span id="total">Rp 90.000</span></p>
+                <div class="r-sep"></div>
 
-            <button class="btn-checkout">Check Out</button>
-            <a href="/" class="continue">Lanjut Belanja</a>
+                <div class="r-row">
+                    <span>Jumlah produk</span>
+                    <b>{{ $lineItems }} item</b>
+                </div>
+
+                <div class="r-row">
+                    <span>Total quantity</span>
+                    <b>{{ $totalQty }} pcs</b>
+                </div>
+
+                <div class="r-sep"></div>
+
+                {{-- daftar item kecil ala struk --}}
+                <div class="r-items">
+                    @foreach($items as $it)
+                        <div class="r-item">
+                            <div class="r-item-left">
+                                <div class="r-item-name">{{ $it['product']->name }}</div>
+                                <div class="r-item-sub">
+                                    {{ $it['qty'] }} x Rp {{ number_format($it['product']->price,0,',','.') }}
+                                </div>
+                            </div>
+                            <div class="r-item-right">
+                                Rp {{ number_format($it['subtotal'],0,',','.') }}
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <div class="r-sep strong"></div>
+
+                <div class="r-total">
+                    <span>TOTAL</span>
+                    <span>Rp {{ number_format($total,0,',','.') }}</span>
+                </div>
+
+                <div class="r-note">
+                    <small>Ongkos kirim akan dihitung di halaman checkout.</small>
+                </div>
+            </div>
+
+            <a href="{{ route('checkout.show') }}" class="btn-checkout">Check Out</a>
+            <a href="{{ route('produk') }}" class="continue">Lanjut Belanja</a>
         </div>
 
     </div>
 </section>
 
-<script src="/assets/js/keranjang.js"></script>
+@include('layout.footer')
 
 </body>
 </html>

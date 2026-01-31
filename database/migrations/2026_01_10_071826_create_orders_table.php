@@ -1,24 +1,56 @@
 <?php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     public function up(): void
     {
-        Schema::create('orders', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('order_code');
-            $table->integer('total_price');
-            $table->enum('status', ['menunggu', 'mengirim', 'terkirim'])
-                  ->default('menunggu');
-            $table->timestamps();
+        Schema::table('orders', function (Blueprint $table) {
+
+            // kalau kolom-kolom ini belum ada, tambahkan
+            if (!Schema::hasColumn('orders', 'receiver_name')) {
+                $table->string('receiver_name', 120)->nullable()->after('user_id');
+            }
+            if (!Schema::hasColumn('orders', 'receiver_email')) {
+                $table->string('receiver_email', 120)->nullable()->after('receiver_name');
+            }
+            if (!Schema::hasColumn('orders', 'receiver_phone')) {
+                $table->string('receiver_phone', 30)->nullable()->after('receiver_email');
+            }
+            if (!Schema::hasColumn('orders', 'shipping_address')) {
+                $table->text('shipping_address')->nullable()->after('receiver_phone');
+            }
+
+            // courier / pickup
+            if (!Schema::hasColumn('orders', 'delivery_method')) {
+                $table->enum('delivery_method', ['courier', 'pickup'])->default('courier')->after('shipping_address');
+            }
+
+            // catatan kecil: ongkir by kurir (informasi saja)
+            if (!Schema::hasColumn('orders', 'shipping_note')) {
+                $table->string('shipping_note', 255)->nullable()->after('delivery_method');
+            }
+
+            // status lengkap (kamu bisa tambah sesuai kebutuhan admin)
+            // menunggu_verifikasi, diproses, dikirim, terkirim, ditolak
+            // (pastikan kolom status di orders sudah ada; kalau sudah, ini tidak menambah)
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('orders');
+        Schema::table('orders', function (Blueprint $table) {
+            $table->dropColumn([
+                'receiver_name',
+                'receiver_email',
+                'receiver_phone',
+                'shipping_address',
+                'delivery_method',
+                'shipping_note',
+            ]);
+        });
     }
 };

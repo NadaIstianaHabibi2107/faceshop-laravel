@@ -6,7 +6,11 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\OrderController;
-
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController; 
+use App\Http\Controllers\RecommendationController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\TryOnController;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -25,22 +29,26 @@ Route::post('/login', [LoginController::class, 'process'])->name('login.process'
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::get('/produk', function () {
-    return view('produk');
-})->name('produk');
+Route::get('/produk', [ProductController::class, 'index'])
+    ->name('produk');
 
+Route::get('/produk/{id}', [ProductController::class, 'show'])
+    ->name('produk.show');
 
-Route::get('/rekomendasi', function () {
-    return view('rekomendasi');
-});
+Route::get('/rekomendasi', [RecommendationController::class, 'index'])
+    ->middleware('auth')
+    ->name('rekomendasi');
 
 Route::get('/profile', [ProfileController::class, 'index'])
     ->middleware('auth')
     ->name('profile');
-    
-Route::get('/keranjang', function () {
-    return view('keranjang');
-})->name('keranjang');
+
+Route::post('/profile', [ProfileController::class, 'update'])
+    ->middleware('auth')
+    ->name('profile.update');
+
+Route::get('/keranjang', [CartController::class, 'index'])
+    ->name('keranjang');
 
 Route::get('/pesanan-saya', [OrderController::class, 'index'])
     ->middleware('auth')
@@ -49,3 +57,29 @@ Route::get('/pesanan-saya', [OrderController::class, 'index'])
 Route::get('/pesanan/{order}', [OrderController::class, 'show'])
     ->middleware('auth')
     ->name('orders.show');
+
+Route::post('/keranjang/tambah', [CartController::class, 'add'])
+    ->name('keranjang.tambah');
+
+Route::post('/keranjang/update', [CartController::class, 'update'])
+    ->name('keranjang.update');
+
+Route::post('/keranjang/hapus', [CartController::class, 'remove'])
+    ->name('keranjang.hapus');
+
+    
+Route::get('/checkout', [CheckoutController::class, 'show'])
+    ->middleware('auth')
+    ->name('checkout.show');
+
+Route::post('/checkout', [CheckoutController::class, 'process'])
+    ->middleware('auth')
+    ->name('checkout.process');
+
+Route::get('/produk/search', [ProductController::class, 'search'])
+    ->name('produk.search');
+
+Route::get('/virtual_tryon', [TryOnController::class, 'index'])->name('tryon');
+
+Route::get('/produk/{product}/tryon/{shade}', [TryOnController::class, 'show'])
+    ->name('tryon.show');

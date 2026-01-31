@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-    /* ================= PESANAN SAYA ================= */
     public function index()
     {
         $orders = Order::where('user_id', Auth::id())
@@ -17,14 +16,19 @@ class OrderController extends Controller
         return view('orders.my-orders', compact('orders'));
     }
 
-    /* ================= DETAIL PESANAN ================= */
     public function show(Order $order)
     {
-        // keamanan: user hanya bisa lihat pesanan sendiri
         if ($order->user_id !== Auth::id()) {
             abort(403);
         }
 
+        $order->load([
+            'items.product',
+            'items.shade',
+            'payment',
+        ]);
+
         return view('orders.detail', compact('order'));
     }
+
 }
