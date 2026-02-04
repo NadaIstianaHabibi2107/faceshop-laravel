@@ -47,6 +47,7 @@ Route::post('/profile', [ProfileController::class, 'update'])
     ->middleware('auth')
     ->name('profile.update');
 
+
 Route::get('/keranjang', [CartController::class, 'index'])
     ->name('keranjang');
 

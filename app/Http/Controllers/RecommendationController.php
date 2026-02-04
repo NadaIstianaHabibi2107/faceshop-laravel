@@ -3,34 +3,36 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
-use App\Models\ProductShade;
+use App\Services\RecommendationEngine;
 
 class RecommendationController extends Controller
 {
-    public function index()
+    public function index(RecommendationEngine $engine)
     {
-        $user = Auth::user();
-
-        // Ambil dari tabel USERS (karena profile kamu nyimpannya ke users)
-        $tone = $user->skin_tone;      // contoh: Fair/Medium/Dark dst
-        $undertone = $user->undertone; // Warm/Neutral/Cool
+        $user = Auth::user()->load('profile');
+        $profileModel = $user->profile;
 
         $recommendations = collect([]);
 
-        // tone & undertone wajib ada
-        if (!empty($tone) && !empty($undertone)) {
-            $matchedShades = ProductShade::with('product')
-                ->where('tone', $tone)
-                ->where('undertone', $undertone)
-                ->get();
+        if ($profileModel && ($profileModel->tone && $profileModel->undertone)) {
 
-            // 1 produk ditampilkan sekali (ambil shade pertama)
-            $recommendations = $matchedShades
+            $profile = [
+                'tone'      => $profileModel->tone,       // lowercase
+                'undertone' => $profileModel->undertone,  // lowercase
+            ];
+
+            $shades = $engine->recommend($profile);
+
+            $recommendations = $shades
                 ->groupBy('product_id')
                 ->map(fn ($group) => $group->first())
                 ->values();
         }
 
-        return view('rekomendasi', compact('recommendations', 'tone', 'undertone'));
+        return view('rekomendasi', [
+            'recommendations' => $recommendations,
+            'tone' => ucfirst($profileModel->tone ?? ''),
+            'undertone' => ucfirst($profileModel->undertone ?? ''),
+        ]);
     }
 }

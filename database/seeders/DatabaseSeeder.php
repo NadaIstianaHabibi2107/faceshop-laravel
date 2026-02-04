@@ -12,4 +12,5 @@ class DatabaseSeeder extends Seeder
             ProductShadeSeeder::class,
         ]);
     }
+    
 }

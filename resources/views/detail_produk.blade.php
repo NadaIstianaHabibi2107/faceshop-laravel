@@ -37,19 +37,24 @@
         @csrf
         <input type="hidden" name="product_id" value="{{ $product->id }}">
 
-        <label for="shade_id">Pilih Shade</label>
         <select name="shade_id" id="shade_id" class="shade-select" required>
             <option value="">-- Pilih Shade --</option>
             @foreach($product->shades as $shade)
+                @php
+                $isRecommended = in_array($shade->id, $recommendedShadeIds ?? []);
+                @endphp
+
                 <option
-                    value="{{ $shade->id }}"
-                    data-tryon-url="{{ route('tryon.show', ['product' => $product->id, 'shade' => $shade->id]) }}"
-                    data-hex="{{ $shade->hex_color }}"
+                value="{{ $shade->id }}"
+                data-tryon-url="{{ route('tryon.show', ['product' => $product->id, 'shade' => $shade->id]) }}"
+                data-hex="{{ $shade->hex_color }}"
                 >
-                    {{ $shade->shade_name }} ({{ $shade->undertone }})
+                {{ $shade->shade_name }} ({{ $shade->undertone }})
+                {{ $isRecommended ? '⭐ Recommended' : '' }}
                 </option>
             @endforeach
         </select>
+
 
         <div class="price-qty">
             <span class="price">
