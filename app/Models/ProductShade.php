@@ -17,15 +17,15 @@ class ProductShade extends Model
         'hex_color',
     ];
 
-    // Relasi: shade milik satu produk
     public function product()
     {
-        return $this->belongsTo(\App\Models\Product::class);
+        return $this->belongsTo(Product::class);
     }
 
-    public function tryOn($productId, $shadeId)
+    // NOTE: lebih bagus pindah ke Controller, tapi boleh dulu untuk tahap cepat.
+    public function tryOn($shadeId)
     {
-        $shade = \App\Models\ProductShade::with('product')->findOrFail($shadeId);
+        $shade = self::with('product')->findOrFail($shadeId);
 
         return view('virtual_tryon', [
             'productName' => $shade->product->name,
@@ -34,10 +34,9 @@ class ProductShade extends Model
             'hex' => $shade->hex_color,
             'shadeName' => $shade->shade_name,
             'badge' => $shade->tone ?? 'Shade',
-            'image' => $shade->product->image ? asset('storage/'.$shade->product->image) : '/assets/image/1.png',
+            'image' => !empty($shade->product->image)
+                ? asset('storage/' . $shade->product->image)
+                : '/assets/image/1.png',
         ]);
     }
-
-    
-
 }

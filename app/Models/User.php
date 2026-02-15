@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     use HasFactory, Notifiable;
 
@@ -17,6 +19,11 @@ class User extends Authenticatable
         'address',
         'phone',
         'role',
+        'skin_type',
+        'skin_tone',
+        'undertone',
+        'skin_problem',
+        'vein_color',
     ];
 
     protected $hidden = [
@@ -34,11 +41,21 @@ class User extends Authenticatable
 
     public function profile()
     {
-        return $this->hasOne(\App\Models\UserProfile::class);
+        return $this->hasOne(UserProfile::class);
     }
 
     public function pcaProfile()
     {
-        return $this->hasOne(\App\Models\UserPcaProfile::class);
+        return $this->hasOne(UserPcaProfile::class);
+    }
+
+    // ✅ Filament: hanya admin boleh akses panel admin
+    public function canAccessPanel(Panel $panel): bool
+    {
+        if ($panel->getId() === 'admin') {
+            return $this->role === 'admin';
+        }
+
+        return true;
     }
 }

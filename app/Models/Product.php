@@ -13,7 +13,8 @@ class Product extends Model
         'price',
         'stock',
         'skin_type',
-        'description'
+        'description',
+        'image',
     ];
 
       public function shades()

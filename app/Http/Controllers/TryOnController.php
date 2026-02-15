@@ -9,23 +9,56 @@ class TryOnController extends Controller
 {
     public function show(Product $product, ProductShade $shade)
     {
-        // pastikan shade milik product
-        if ($shade->product_id !== $product->id) {
-            abort(404);
-        }
+        // ✅ Pastikan shade benar-benar milik product ini (lebih aman)
+        $activeShade = $product->shades()
+            ->whereKey($shade->id)
+            ->firstOrFail();
 
-        $shades = ProductShade::where('product_id', $product->id)->get();
+        $shades = $product->shades()->get();
 
-        $image = $product->image
+        $image = !empty($product->image)
             ? asset('storage/' . $product->image)
             : '/assets/image/1.png';
 
         return view('virtual_tryon', [
             'product'     => $product,
             'shades'      => $shades,
-            'activeShade' => $shade,
+            'activeShade' => $activeShade,
             'image'       => $image,
         ]);
     }
-    
+}
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Product;
+use App\Models\ProductShade;
+
+class TryOnController extends Controller
+{
+    public function show(Product $product, ProductShade $shade)
+    {
+        // Ambil semua shades milik product (sekali saja)
+        $product->load('shades');
+
+        // Pastikan shade benar-benar milik product ini
+        $activeShade = $product->shades->firstWhere('id', $shade->id);
+
+        if (! $activeShade) {
+            abort(404);
+        }
+
+        // Gambar produk
+        $image = !empty($product->image)
+            ? asset('storage/' . $product->image)
+            : asset('assets/image/1.png');
+
+        return view('virtual_tryon', [
+            'product'     => $product,
+            'shades'      => $product->shades,
+            'activeShade' => $activeShade,
+            'image'       => $image,
+        ]);
+    }
 }
