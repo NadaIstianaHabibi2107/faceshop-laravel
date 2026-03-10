@@ -5,6 +5,7 @@
   <title>Profil Saya | Faceshop</title>
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/profile.css">
+  <link rel="stylesheet" href="{{ asset('assets/css/navbar.css') }}">
 </head>
 <body class="faceshop-body">
 
@@ -12,19 +13,19 @@
 
 @php
   $profile = $user->profile;
+  $pca = $user->pcaProfile;
 
-  // helper kecil biar aman (kalau null)
   $p_skin_type  = strtolower($profile->skin_type ?? '');
-  $p_tone       = strtolower($profile->tone ?? '');
-  $p_undertone  = strtolower($profile->undertone ?? '');
-  $p_vein_color = strtolower($profile->vein_color ?? '');
+  $p_undertone  = strtolower($pca->undertone ?? '');
+  $p_vein_color = strtolower($pca->vein_color ?? '');
+  $p_tone_level = (int) ($pca->skin_tone_level ?? 0);
 @endphp
 
 <section class="profile-section">
   <div class="profile-head">
     <div>
       <h1 class="profile-title">Profil Saya</h1>
-      <p class="profile-subtitle">Atur data diri dan preferensi shade untuk rekomendasi yang lebih akurat.</p>
+      <p class="profile-subtitle">Atur data diri dan preferensi untuk rekomendasi shade yang lebih akurat.</p>
     </div>
 
     @if(session('success'))
@@ -83,13 +84,13 @@
     {{-- KANAN --}}
     <div class="profile-card">
       <div class="card-title">
-        <h2>Profil Shade</h2>
+        <h2>Profil Warna Kulit</h2>
         <small>* wajib diisi</small>
       </div>
 
       <div class="grid-2">
         <div class="field">
-          <label>Jenis Kulit  <span class="req">*</span></label>
+          <label>Jenis Kulit <span class="req">*</span></label>
           <select name="skin_type">
             @foreach ([
               'normal' => 'Normal',
@@ -106,55 +107,44 @@
         </div>
 
         <div class="field">
-          <label>Warna Nadi (opsional)</label>
+          <label>Warna Urat Nadi (opsional)</label>
           <select name="vein_color">
-            <option value="" {{ old('vein_color', $profile->vein_color ?? '') ? '' : 'selected' }}>-</option>
-            @foreach ([
-              'biru' => 'Biru',
-              'hijau' => 'Hijau',
-              'ungu' => 'Ungu',
-              'campuran' => 'Campuran',
-            ] as $val => $label)
-              <option value="{{ $val }}" {{ old('vein_color', $profile->vein_color ?? '') === $val ? 'selected' : '' }}>
-                {{ $label }}
-              </option>
-            @endforeach
+            <option value="" {{ old('vein_color', $p_vein_color) ? '' : 'selected' }}>-</option>
+
+            <option value="blue_purple" {{ old('vein_color', $p_vein_color) === 'blue_purple' ? 'selected' : '' }}>
+              Kebiruan / Ungu
+            </option>
+
+            <option value="green_olive" {{ old('vein_color', $p_vein_color) === 'green_olive' ? 'selected' : '' }}>
+              Kehijauan / Olive
+            </option>
+
+            <option value="mixed" {{ old('vein_color', $p_vein_color) === 'mixed' ? 'selected' : '' }}>
+              Campuran / Sulit dibedakan
+            </option>
           </select>
+
+          <small class="hint">Lihat di cahaya alami dekat jendela.</small>
         </div>
       </div>
 
       <div class="grid-2">
         <div class="field">
-          <label>Skintone (Warna Kulit) <span class="req">*</span></label>
-          <select name="tone">
-          @foreach ([
-            'fair' => 'Fair (Putih Pucat)',
-            'light' => 'Light (Putih Gading / Kuning Langsat)',
-            'medium' => 'Medium (Sawo Matang)',
-            'tan' => 'Tan (Cokelat Muda)',
-            'deep' => 'Deep (Cokelat Tua)',
-            'dark' => 'Dark (Gelap / Ebony)',
-          ] as $val => $label)
-            <option value="{{ $val }}" {{ old('tone', $profile->tone ?? '') === $val ? 'selected' : '' }}>
-              {{ $label }}
-            </option>
-          @endforeach
-        </select>
+          <label>Tingkat Kecerahan Kulit <span class="req">*</span></label>
+          <select name="skin_tone_level" required>
+            <option value="1" {{ (string) old('skin_tone_level', $p_tone_level ?: '') === '1' ? 'selected' : '' }}>Sangat terang (Fair)</option>
+            <option value="2" {{ (string) old('skin_tone_level', $p_tone_level ?: '') === '2' ? 'selected' : '' }}>Terang (Light)</option>
+            <option value="3" {{ (string) old('skin_tone_level', $p_tone_level ?: '') === '3' ? 'selected' : '' }}>Sedang / Kuning langsat (Medium)</option>
+            <option value="4" {{ (string) old('skin_tone_level', $p_tone_level ?: '') === '4' ? 'selected' : '' }}>Sawo matang terang (Tan)</option>
+            <option value="5" {{ (string) old('skin_tone_level', $p_tone_level ?: '') === '5' ? 'selected' : '' }}>Sawo matang gelap (Deep)</option>
+            <option value="6" {{ (string) old('skin_tone_level', $p_tone_level ?: '') === '6' ? 'selected' : '' }}>Gelap (Dark)</option>
+          </select>
         </div>
 
         <div class="field">
-          <label>Undertone (Warna Nadi)<span class="req">*</span></label>
-          <select name="undertone">
-            @foreach ([
-              'warm' => 'Warm (Hijau)',
-              'neutral' => 'Neutral (Campuran)',
-              'cool' => 'Cool (Biru/Ungu)',
-            ] as $val => $label)
-              <option value="{{ $val }}" {{ old('undertone', $profile->undertone ?? '') === $val ? 'selected' : '' }}>
-                {{ $label }}
-              </option>
-            @endforeach
-          </select>
+          <label>Undertone (hasil otomatis)</label>
+          <input type="text" value="{{ $p_undertone ? strtoupper($p_undertone) : '-' }}" disabled>
+          <small class="hint">Undertone dihitung otomatis dari warna urat nadi.</small>
         </div>
       </div>
 
@@ -163,13 +153,10 @@
         @php
           $problems = ['Jerawat','Komedo','Pori-pori Besar','Kulit Kusam','Hiperpigmentasi','Bekas Jerawat'];
 
-          // DB kamu simpan jadi string lowercase "jerawat, komedo..."
           $selectedFromDb = ($profile && $profile->skin_problem)
             ? array_map('trim', explode(',', $profile->skin_problem))
             : [];
 
-          // old('skin_problem') dari form adalah array dengan kapital (sesuai value checkbox)
-          // jadi kita pakai old jika ada, kalau tidak, pakai DB tetapi ubah jadi kapital awal biar match checkbox
           $selected = old('skin_problem')
             ? old('skin_problem')
             : array_map(fn($x) => ucwords($x), $selectedFromDb);
@@ -191,7 +178,7 @@
       </div>
 
       <div class="note">
-        <b>Catatan:</b> Rekomendasi shade akan memakai <b>Skintone</b> & <b>Undertone</b> kamu.
+        <b>Catatan:</b> Rekomendasi shade akan memakai <b>Tingkat Kecerahan</b> & <b>Undertone</b> kamu.
       </div>
     </div>
   </form>

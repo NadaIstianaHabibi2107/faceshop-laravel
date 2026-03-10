@@ -7,6 +7,7 @@
 
   <link rel="stylesheet" href="/assets/css/style.css" />
   <link rel="stylesheet" href="/assets/css/login.css">
+  <link rel="stylesheet" href="{{ asset('assets/css/navbar.css') }}" />
 </head>
 <body>
 
@@ -31,11 +32,16 @@
         <input type="password" name="password" required>
 
         <button type="submit" class="btn-login-main">Login</button>
+
+        {{-- ✅ tombol admin ke filament --}}
+        <a href="{{ route('filament.admin.auth.login') }}" class="btn-admin-link">
+          Login sebagai Admin
+        </a>
       </form>
 
       <p class="register-text">
         Belum punya akun?
-        <a href="/daftar">Daftar sekarang</a>
+        <a href="{{ route('daftar.show') }}">Daftar sekarang</a>
       </p>
     </div>
 

@@ -15,6 +15,7 @@ class Product extends Model
         'skin_type',
         'description',
         'image',
+        'is_active',
     ];
 
       public function shades()

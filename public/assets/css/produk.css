@@ -8,8 +8,6 @@
   color: #2f2f2f;
   font-family: 'Poppins', sans-serif;
   font-weight: 400;
-  /* background sengaja tidak dipakai di sini
-     biar ikut body (anti belang) */
 }
 
 /* =============================
@@ -39,17 +37,18 @@
    TOOLBAR
 ============================= */
 .produk-toolbar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 14px;
   margin: 18px 0 12px;
 }
 
 /* SEARCH */
 .search-wrap{
-  display:flex;
-  align-items:center;
+  position: relative;
+  display: flex;
+  align-items: center;
   gap: 10px;
   width: 330px;
   background: #fff;
@@ -79,17 +78,13 @@
   color: rgba(0,0,0,.45);
 }
 
-.search-wrap{
-  position: relative;
-}
-
 .search-clear{
   border: none;
   background: transparent;
   cursor: pointer;
   font-size: 14px;
   opacity: .6;
-  display: none; /* muncul kalau ada input */
+  display: none;
   padding: 0 6px;
 }
 
@@ -99,12 +94,12 @@
 
 /* ACTIONS */
 .toolbar-actions{
-  display:flex;
-  align-items:center;
+  display: flex;
+  align-items: center;
   gap: 10px;
 }
 
-/* ICON BTN (untuk <a> juga aman, gak biru, gak underline) */
+/* ICON BTN */
 .icon-btn{
   width: 40px;
   height: 40px;
@@ -114,17 +109,14 @@
   box-shadow: 0 6px 14px rgba(0,0,0,.06);
   cursor: pointer;
   font-size: 16px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   text-decoration: none;
   color: #2f2f2f;
   transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
 }
 
-/* kalau icon-btn adalah <a>, ini menjaga semua state aman */
 .icon-btn:visited,
 .icon-btn:active,
 .icon-btn:focus{
@@ -142,8 +134,8 @@
 
 /* FILTER BTN */
 .filter-btn{
-  display:flex;
-  align-items:center;
+  display: flex;
+  align-items: center;
   gap: 8px;
   height: 40px;
   padding: 0 14px;
@@ -151,7 +143,7 @@
   background: #fff;
   border: 1px solid rgba(0,0,0,.10);
   box-shadow: 0 6px 14px rgba(0,0,0,.06);
-  cursor:pointer;
+  cursor: pointer;
   font-size: 14px;
   font-weight: 500;
   color: #2f2f2f;
@@ -172,9 +164,9 @@
    SECTION HEAD
 ============================= */
 .produk-section-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin: 22px 0 14px;
 }
 
@@ -206,7 +198,7 @@
    GRID
 ============================= */
 .produk-grid{
-  display:grid;
+  display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
@@ -232,20 +224,20 @@
 
 /* LINK DALAM CARD */
 .card-link{
-  text-decoration:none;
+  text-decoration: none;
   color: inherit;
-  display:block;
+  display: block;
 }
 
 /* BADGE */
 .badge{
-  position:absolute;
+  position: absolute;
   top: 14px;
   left: 14px;
   font-size: 10px;
   padding: 4px 10px;
   border-radius: 999px;
-  color:#fff;
+  color: #fff;
   font-weight: 600;
   letter-spacing: .2px;
 }
@@ -256,8 +248,8 @@
 
 /* IMAGE */
 .product-image{
-  display:flex;
-  justify-content:center;
+  display: flex;
+  justify-content: center;
   margin: 22px 0 16px;
 }
 
@@ -269,7 +261,7 @@
 
 /* INFO */
 .product-info .brand{
-  display:block;
+  display: block;
   font-size: 11px;
   font-weight: 400;
   color: rgba(0,0,0,.55);
@@ -281,6 +273,8 @@
   font-weight: 650;
   margin: 0 0 2px;
   color: #b11226;
+  line-height: 1.4;
+  min-height: 42px;
 }
 
 .skin-type{
@@ -298,12 +292,10 @@
 }
 
 /* =============================
-   (OPSIONAL) ADD CART DI CARD
-   Kalau kamu mau hapus tombol keranjang di card,
-   cukup hapus bagian HTML form-nya.
+   ADD CART
 ============================= */
 .add-cart-form{
-  position:absolute;
+  position: absolute;
   right: 14px;
   bottom: 14px;
 }
@@ -326,24 +318,264 @@
 }
 
 /* =============================
+   FILTER PANEL
+============================= */
+.filter-panel{
+  margin: 14px 0 6px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.10);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 10px 22px rgba(0,0,0,.08);
+}
+
+.filter-grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.filter-item label{
+  display: block;
+  font-size: 12px;
+  margin-bottom: 6px;
+  color: rgba(0,0,0,.65);
+  font-weight: 600;
+}
+
+.filter-item input,
+.filter-item select{
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,.12);
+  outline: none;
+  font-size: 13px;
+  background: #fff;
+}
+
+.filter-item input:focus,
+.filter-item select:focus{
+  border-color: rgba(230,91,122,.55);
+  box-shadow: 0 0 0 4px rgba(230,91,122,.12);
+}
+
+.filter-actions{
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+/* =============================
+   PAGINATION
+============================= */
+.produk-pagination-wrap{
+  margin-top: 28px;
+  width: 100%;
+}
+
+.produk-pagination-wrap nav{
+  width: 100%;
+}
+
+.produk-pagination-wrap nav > div{
+  width: 100%;
+}
+
+/* wrapper desktop */
+.produk-pagination-wrap .hidden.sm\:flex-1.sm\:flex.sm\:items-center.sm\:justify-between{
+  width: 100%;
+  display: flex !important;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  flex-wrap: nowrap;
+}
+
+/* kiri */
+.produk-pagination-wrap .hidden.sm\:flex-1.sm\:flex.sm\:items-center.sm\:justify-between > div:first-child{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  min-width: 180px;
+}
+
+/* kanan */
+.produk-pagination-wrap .hidden.sm\:flex-1.sm\:flex.sm\:items-center.sm\:justify-between > div:last-child{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
+  flex: 1;
+}
+
+/* teks showing */
+.produk-pagination-wrap p{
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+  text-align: right;
+  line-height: 1.5;
+}
+
+/* angka pagination */
+.produk-pagination-wrap .relative.z-0.inline-flex{
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* semua button/link */
+.produk-pagination-wrap .relative.inline-flex.items-center,
+.produk-pagination-wrap .relative.z-0.inline-flex > *{
+  min-width: 42px;
+  height: 42px;
+  padding: 0 14px;
+  border-radius: 999px !important;
+  border: none !important;
+  box-shadow: none !important;
+  background: #f5f2f0;
+  color: #850E35;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .2s ease;
+}
+
+/* hover */
+.produk-pagination-wrap a:hover{
+  background: #fde7ee;
+  color: #b11226;
+  transform: translateY(-1px);
+}
+
+/* aktif */
+.produk-pagination-wrap [aria-current="page"] span{
+  background: linear-gradient(to right, #f06b83, #e65b7a) !important;
+  color: #fff !important;
+  font-weight: 700;
+  min-width: 48px;
+}
+
+/* disabled */
+.produk-pagination-wrap [aria-disabled="true"] span{
+  background: #f1f1f1 !important;
+  color: #b9b9b9 !important;
+  cursor: not-allowed;
+}
+
+/* prev next */
+.produk-pagination-wrap a[rel="prev"],
+.produk-pagination-wrap a[rel="next"]{
+  min-width: 110px;
+  justify-content: center;
+  background: #f5f2f0;
+  font-weight: 700;
+}
+
+/* =============================
    RESPONSIVE
 ============================= */
 @media (max-width: 1100px){
-  .produk-page{ padding: 22px 28px 44px; }
-  .produk-grid{ grid-template-columns: repeat(2, 1fr); }
-  .search-wrap{ width: 100%; max-width: 420px; }
+  .produk-page{
+    padding: 22px 28px 44px;
+  }
+
+  .produk-grid{
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .search-wrap{
+    width: 100%;
+    max-width: 420px;
+  }
+}
+
+@media (max-width: 900px){
+  .filter-grid{
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px){
+  .produk-pagination-wrap .hidden.sm\:flex-1.sm\:flex.sm\:items-center.sm\:justify-between{
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .produk-pagination-wrap .hidden.sm\:flex-1.sm\:flex.sm\:items-center.sm\:justify-between > div:first-child{
+    flex-direction: row;
+    justify-content: space-between;
+    min-width: 100%;
+  }
+
+  .produk-pagination-wrap .hidden.sm\:flex-1.sm\:flex.sm\:items-center.sm\:justify-between > div:last-child{
+    align-items: center;
+  }
+
+  .produk-pagination-wrap p{
+    text-align: center;
+  }
+
+  .produk-pagination-wrap .relative.z-0.inline-flex{
+    justify-content: center;
+  }
 }
 
 @media (max-width: 680px){
-  .produk-grid{ grid-template-columns: 1fr; }
-  .produk-toolbar{ flex-direction: column; align-items: stretch; }
-  .toolbar-actions{ justify-content:flex-end; }
-  .search-wrap{ width: 100%; }
+  .produk-grid{
+    grid-template-columns: 1fr;
+  }
+
+  .produk-toolbar{
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .toolbar-actions{
+    justify-content: flex-end;
+  }
+
+  .search-wrap{
+    width: 100%;
+  }
 }
 
 @media (max-width: 520px){
-  .produk-page{ padding: 18px 18px 40px; }
-  .rekom-header{ padding: 38px 16px; }
-  .rekom-header h1{ font-size: 26px; }
-  .rekom-header p{ font-size: 14px; }
+  .produk-page{
+    padding: 18px 18px 40px;
+  }
+
+  .rekom-header{
+    padding: 38px 16px;
+  }
+
+  .rekom-header h1{
+    font-size: 26px;
+  }
+
+  .rekom-header p{
+    font-size: 14px;
+  }
+
+  .produk-pagination-wrap .hidden.sm\:flex-1.sm\:flex.sm\:items-center.sm\:justify-between > div:first-child{
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .produk-pagination-wrap a[rel="prev"],
+  .produk-pagination-wrap a[rel="next"]{
+    min-width: 100px;
+  }
 }

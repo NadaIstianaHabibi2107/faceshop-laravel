@@ -6,6 +6,7 @@ use App\Filament\Resources\Products\Pages\CreateProduct;
 use App\Filament\Resources\Products\Pages\EditProduct;
 use App\Filament\Resources\Products\Pages\ListProducts;
 use App\Filament\Resources\Products\Pages\ViewProduct;
+use App\Filament\Resources\Products\RelationManagers\ShadesRelationManager;
 use App\Filament\Resources\Products\Schemas\ProductForm;
 use App\Filament\Resources\Products\Schemas\ProductInfolist;
 use App\Filament\Resources\Products\Tables\ProductsTable;
@@ -23,6 +24,12 @@ class ProductResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'name';
+
+    protected static ?string $navigationLabel = 'Produk';
+
+    protected static ?string $modelLabel = 'Produk';
+
+    protected static ?string $pluralModelLabel = 'Produk';
 
     public static function form(Schema $schema): Schema
     {
@@ -42,17 +49,17 @@ class ProductResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ShadesRelationManager::class,
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => ListProducts::route('/'),
+            'index'  => ListProducts::route('/'),
             'create' => CreateProduct::route('/create'),
-            'view' => ViewProduct::route('/{record}'),
-            'edit' => EditProduct::route('/{record}/edit'),
+            'view'   => ViewProduct::route('/{record}'),
+            'edit'   => EditProduct::route('/{record}/edit'),
         ];
     }
 }

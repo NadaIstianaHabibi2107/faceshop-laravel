@@ -17,8 +17,8 @@ return new class extends Migration {
             $table->string('shade_name');      // Warm Ivory, Cool Beige
             $table->string('tone');            // Fair, Medium, Deep
             $table->string('undertone');       // Warm, Cool, Neutral
+            $table->integer('stock')->default(0);
             $table->string('hex_color');       // #F1D6C1
-
             $table->timestamps();
         });
     }

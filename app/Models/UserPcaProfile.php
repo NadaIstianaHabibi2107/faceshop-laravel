@@ -11,13 +11,15 @@ class UserPcaProfile extends Model
         'skin_tone_level',
         'undertone',
         'vein_color',
-        'eye_color',
+
+        'eye_contrast',
         'hair_color',
-        'contrast_level',
+
         'hue',
         'value',
         'chroma',
         'season',
+        'confidence',
     ];
 
     public function user()

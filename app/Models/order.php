@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
+use App\Models\OrderItem;
+use App\Models\Payment;
 
 class Order extends Model
 {
@@ -12,7 +15,6 @@ class Order extends Model
         'total_price',
         'status',
 
-        // detail penerima
         'receiver_name',
         'receiver_email',
         'receiver_phone',
@@ -20,6 +22,11 @@ class Order extends Model
         'delivery_method',
         'shipping_note',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function items()
     {
@@ -31,7 +38,6 @@ class Order extends Model
         return $this->hasOne(Payment::class);
     }
 
-    // ===== helper untuk badge status =====
     public function statusLabel(): string
     {
         return match ($this->status) {

@@ -7,6 +7,7 @@
 
   <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/css/tryon.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/css/navbar.css') }}">
 </head>
 
 <body class="faceshop-body">

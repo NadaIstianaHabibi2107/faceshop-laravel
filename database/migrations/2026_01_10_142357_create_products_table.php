@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->string('category');          // Foundation, Lipstick
             $table->integer('price');            // Harga
             $table->integer('stock');            // Stok
-            $table->enum('skin_type', ['Normal','Berminyak','Sensitif']);
+            $table->enum('skin_type', ['normal','berminyak','kering','kombinasi','sensitif']);
             $table->text('description')->nullable();
             $table->timestamps();
         });

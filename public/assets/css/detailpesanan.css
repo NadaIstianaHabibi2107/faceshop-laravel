@@ -119,7 +119,7 @@
   line-height: 1.4;
 }
 
-/* STATUS PILL */
+/* STATUS PILL - SESUAI ENUM DB */
 .status-pill{
   padding: 6px 12px;
   border-radius: 999px;
@@ -128,31 +128,35 @@
   display:inline-flex;
   align-items:center;
   gap: 8px;
+  border: 1px solid rgba(0,0,0,.06);
 }
 
-.status-menunggu_verifikasi,
-.status-menunggu{
-  background: #fff3cd;
-  color:#856404;
+/* Biru (menunggu) */
+.status-menunggu_verifikasi{
+  background: #e0ecff;
+  color:#2563eb;
 }
 
+/* Biru tua (diproses) */
 .status-diproses{
   background:#e7f1ff;
   color:#1b4b91;
 }
 
-.status-mengirim{
-  background:#e8f5ff;
-  color:#0b5a7a;
+/* Ungu (dikirim) */
+.status-dikirim{
+  background:#f3e8ff;
+  color:#7c3aed;
 }
 
-.status-terkirim{
-  background:#eaf7ee;
-  color:#1f6a3a;
+/* Hijau (selesai) */
+.status-selesai{
+  background:#dcfce7;
+  color:#16a34a;
 }
 
-.status-ditolak,
-.status-batal{
+/* Merah (dibatalkan) */
+.status-dibatalkan{
   background:#ffe8e8;
   color:#b3261e;
 }

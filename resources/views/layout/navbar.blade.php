@@ -5,20 +5,44 @@
         <span>FACESHOP</span>
     </div>
 
-    {{-- TENGAH --}}
-    <nav class="nav-menu">
-        <a href="/">Beranda</a>
-        <a href="/produk">Produk</a>
-      
-        <a href="/rekomendasi">Rekomendasi</a>
+    {{-- TENGAH (CUMA 3 MENU) --}}
+    <nav class="nav-menu" id="navMenu">
+        <a href="{{ route('home') }}">Beranda</a>
+        <a href="{{ route('produk') }}">Produk</a>
+
+        @auth
+            <a href="{{ route('rekomendasi') }}">Rekomendasi</a>
+        @else
+            <a href="{{ route('login') }}">Rekomendasi</a>
+        @endauth
     </nav>
 
     {{-- KANAN --}}
     <div class="nav-right">
+        {{-- tombol hamburger (HANYA MUNCUL DI HP) --}}
+        <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle menu">
+            ☰
+        </button>
+
         @auth
+            {{-- ICON KERANJANG & PESANAN (DI SAMPING KIRI PROFILE) --}}
+            <div class="nav-actions">
+                <a class="icon-btn" href="{{ route('keranjang') }}" title="Keranjang">
+                    🛒
+                    {{-- kalau nanti mau badge jumlah item: --}}
+                    {{-- <span class="badge-count">{{ $cartCount ?? 0 }}</span> --}}
+                </a>
+
+                <a class="icon-btn" href="{{ route('orders.index') }}" title="Pesanan Saya">
+                    📦
+                </a>
+            </div>
+
+            {{-- DROPDOWN PROFILE (CUMA PROFIL + LOGOUT) --}}
             <div class="user-menu">
                 <button type="button" id="userToggle" class="user-name">
-                    {{ Auth::user()->name }}
+                    <span class="user-text">{{ Auth::user()->name }}</span>
+                    <span class="chev">▾</span>
                 </button>
 
                 <div id="userDropdown" class="dropdown">
@@ -38,25 +62,47 @@
     </div>
 </div>
 
-{{-- SCRIPT DROPDOWN --}}
+{{-- SCRIPT DROPDOWN + MOBILE MENU --}}
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    const toggle = document.getElementById("userToggle");
-    const dropdown = document.getElementById("userDropdown");
 
-    if (toggle && dropdown) {
-        toggle.addEventListener("click", function (e) {
+    // ===== DROPDOWN USER =====
+    const userToggle = document.getElementById("userToggle");
+    const userDropdown = document.getElementById("userDropdown");
+
+    if (userToggle && userDropdown) {
+        userToggle.addEventListener("click", function (e) {
             e.stopPropagation();
-            dropdown.classList.toggle("show");
+            userDropdown.classList.toggle("show");
         });
 
         document.addEventListener("click", function () {
-            dropdown.classList.remove("show");
+            userDropdown.classList.remove("show");
         });
 
-        dropdown.addEventListener("click", function (e) {
+        userDropdown.addEventListener("click", function (e) {
             e.stopPropagation();
         });
     }
+
+    // ===== MOBILE MENU TOGGLE =====
+    const navToggle = document.getElementById("navToggle");
+    const navMenu = document.getElementById("navMenu");
+
+    if (navToggle && navMenu) {
+        navToggle.addEventListener("click", function (e) {
+            e.stopPropagation();
+            navMenu.classList.toggle("open");
+        });
+
+        document.addEventListener("click", function () {
+            navMenu.classList.remove("open");
+        });
+
+        navMenu.addEventListener("click", function (e) {
+            e.stopPropagation();
+        });
+    }
+
 });
 </script>

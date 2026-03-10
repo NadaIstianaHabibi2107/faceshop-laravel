@@ -10,7 +10,7 @@ class OrderController extends Controller
     public function index()
     {
         $orders = Order::where('user_id', Auth::id())
-            ->orderBy('created_at', 'desc')
+            ->latest()
             ->get();
 
         return view('orders.my-orders', compact('orders'));
@@ -18,9 +18,7 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        if ($order->user_id !== Auth::id()) {
-            abort(403);
-        }
+        abort_if($order->user_id !== Auth::id(), 403);
 
         $order->load([
             'items.product',
@@ -30,5 +28,4 @@ class OrderController extends Controller
 
         return view('orders.detail', compact('order'));
     }
-
 }

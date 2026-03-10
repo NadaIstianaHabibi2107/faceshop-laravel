@@ -5,12 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Keranjang Belanja | Faceshop</title>
 
+    {{-- ✅ FIX TYPO INI --}}
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/keranjang.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/navbar.css') }}">
+
 
     {{-- ICON --}}
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
 
 <body>
@@ -27,9 +31,14 @@
         <div class="cart-list">
 
             @forelse($items as $index => $item)
+                @php
+                    $shadeStock = (int)($item['shade_stock'] ?? ($item['shade']->stock ?? 0));
+                    $isOut = $shadeStock <= 0;
+                @endphp
+
                 <div class="cart-item">
 
-                    {{-- tombol hapus (fix posisi biar ga rusak) --}}
+                    {{-- tombol hapus --}}
                     <form action="{{ route('keranjang.hapus') }}" method="POST" class="btn-delete">
                         @csrf
                         <input type="hidden" name="index" value="{{ $index }}">
@@ -39,7 +48,11 @@
                     </form>
 
                     <div class="cart-thumb">
-                        <img src="/assets/image/1.png" alt="{{ $item['product']->name }}">
+                        <img
+                            src="{{ !empty($item['product']->image) ? Storage::url($item['product']->image) : asset('assets/image/1.png') }}"
+                            alt="{{ $item['product']->name }}"
+                            onerror="this.onerror=null;this.src='{{ asset('assets/image/1.png') }}';"
+                        >
                     </div>
 
                     <div class="cart-info">
@@ -61,6 +74,7 @@
 
                             @if(!empty($item['shade']))
                                 <span class="shade-name">{{ $item['shade']->shade_name }}</span>
+
                                 @if(!empty($item['shade']->hex_color))
                                     <span class="shade-dot" style="background: {{ $item['shade']->hex_color }};"></span>
                                 @endif
@@ -69,24 +83,43 @@
                             @endif
                         </div>
 
+                        {{-- ✅ INFO STOK HABIS --}}
+                        @if($isOut)
+                            <div style="margin-top:6px; color:#c00; font-weight:700;">
+                                SHADE HABIS (tidak bisa checkout)
+                            </div>
+                        @else
+                            <div style="margin-top:6px; color:#666; font-size:13px;">
+                                Stok tersedia: {{ $shadeStock }}
+                            </div>
+                        @endif
+
                         {{-- QTY --}}
                         <div class="qty-control">
+                            {{-- minus --}}
                             <form action="{{ route('keranjang.update') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="index" value="{{ $index }}">
                                 <input type="hidden" name="qty" value="{{ max(1, $item['qty'] - 1) }}">
-                                <button type="submit" class="qty-btn" title="Kurangi">−</button>
+                                <button type="submit" class="qty-btn" title="Kurangi" {{ $isOut ? 'disabled' : '' }}>−</button>
                             </form>
 
                             <span class="qty">{{ $item['qty'] }}</span>
 
+                            {{-- plus --}}
                             <form action="{{ route('keranjang.update') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="index" value="{{ $index }}">
                                 <input type="hidden" name="qty" value="{{ $item['qty'] + 1 }}">
-                                <button type="submit" class="qty-btn" title="Tambah">+</button>
+                                <button type="submit" class="qty-btn" title="Tambah" {{ $isOut ? 'disabled' : '' }}>+</button>
                             </form>
                         </div>
+
+                        @if($isOut)
+                            <div style="margin-top:6px; color:#c00; font-size:12px;">
+                                Item ini harus dihapus sebelum checkout.
+                            </div>
+                        @endif
                     </div>
 
                     <div class="cart-price">
@@ -111,10 +144,13 @@
 
         </div>
 
-        {{-- RINGKASAN (MODEL STRUK) --}}
+        {{-- RINGKASAN --}}
         @php
-          $lineItems = count($items);
-          $totalQty  = collect($items)->sum('qty');
+            $lineItems = count($items);
+            $totalQty  = collect($items)->sum('qty');
+
+            // ✅ kalau ada item yang shade_stock <= 0, disable checkout
+            $hasOutOfStock = collect($items)->contains(fn($it) => (int)($it['shade_stock'] ?? 0) <= 0);
         @endphp
 
         <div class="cart-summary">
@@ -144,7 +180,7 @@
 
                 <div class="r-sep"></div>
 
-                {{-- daftar item kecil ala struk --}}
+                {{-- daftar item kecil --}}
                 <div class="r-items">
                     @foreach($items as $it)
                         <div class="r-item">
@@ -173,7 +209,19 @@
                 </div>
             </div>
 
-            <a href="{{ route('checkout.show') }}" class="btn-checkout">Check Out</a>
+            {{-- ✅ CHECKOUT DISABLED kalau ada stok habis --}}
+            <a href="{{ route('checkout.show') }}"
+               class="btn-checkout"
+               style="{{ $hasOutOfStock ? 'pointer-events:none; opacity:.6; cursor:not-allowed;' : '' }}">
+                Check Out
+            </a>
+
+            @if($hasOutOfStock)
+                <div style="margin-top:10px; color:#c00; font-size:13px;">
+                    Hapus item yang stoknya habis dulu sebelum checkout.
+                </div>
+            @endif
+
             <a href="{{ route('produk') }}" class="continue">Lanjut Belanja</a>
         </div>
 

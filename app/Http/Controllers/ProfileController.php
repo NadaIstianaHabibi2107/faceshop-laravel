@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UserProfile;
+use App\Models\UserPcaProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\UserProfile;
 
 class ProfileController extends Controller
 {
     public function index()
     {
-        $user = Auth::user()->load('profile');
+        $user = Auth::user()->load(['profile', 'pcaProfile']);
+
         return view('profile.index', compact('user'));
     }
 
@@ -19,47 +21,58 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         $validated = $request->validate([
-            // akun
-            'name' => 'required|string|max:100',
-            'phone' => 'required|string|max:30',
-            'address' => 'required|string|max:500',
-
-            // profile rekomendasi (UI boleh kapital, tapi kita simpan lowercase)
-            'skin_type'   => 'required|in:normal,berminyak,kering,kombinasi,sensitif',
-            'tone'        => 'required|in:fair,light,medium,tan,deep,dark',
-            'undertone'   => 'required|in:warm,neutral,cool',
-            'vein_color'  => 'nullable|in:biru,hijau,ungu,campuran',
-            'skin_problem'=> 'nullable|array',
+            'name'            => 'required|string|max:100',
+            'phone'           => 'required|string|max:30',
+            'address'         => 'required|string|max:500',
+            'skin_type'       => 'required|in:normal,berminyak,kering,kombinasi,sensitif',
+            'skin_problem'    => 'nullable|array',
+            'skin_tone_level' => 'required|integer|min:1|max:6',
+            'vein_color'      => 'nullable|in:blue_purple,green_olive,mixed',
         ]);
 
-        // 1) simpan akun ke table users
         $user->update([
-            'name' => $validated['name'],
-            'phone' => $validated['phone'],
+            'name'    => $validated['name'],
+            'phone'   => $validated['phone'],
             'address' => $validated['address'],
         ]);
-
-        // 2) normalisasi -> lowercase untuk DB
-        $skinType  = strtolower(trim($validated['skin_type']));
-        $tone      = strtolower(trim($validated['tone']));
-        $undertone = strtolower(trim($validated['undertone']));
-        $veinColor = !empty($validated['vein_color'])
-            ? strtolower(trim($validated['vein_color']))
-            : null;
 
         $skinProblemString = isset($validated['skin_problem'])
             ? strtolower(implode(', ', $validated['skin_problem']))
             : null;
 
-        // 3) simpan profil rekomendasi ke user_profiles (bukan users)
+        $veinColor = $validated['vein_color'] ?? null;
+
+        $undertone = match ($veinColor) {
+            'blue_purple' => 'cool',
+            'green_olive' => 'warm',
+            'mixed'       => 'neutral',
+            default       => null,
+        };
+
         UserProfile::updateOrCreate(
             ['user_id' => $user->id],
             [
-                'skin_type' => $skinType,
-                'tone' => $tone,
-                'undertone' => $undertone,
-                'vein_color' => $veinColor,
+                'skin_type'    => strtolower(trim($validated['skin_type'])),
                 'skin_problem' => $skinProblemString,
+
+                // sementara tetap diisi agar kolom wajib tidak error
+                'tone'         => 'fair',
+                'undertone'    => $undertone ?? 'neutral',
+                'vein_color'   => $veinColor,
+            ]
+        );
+
+        UserPcaProfile::updateOrCreate(
+            ['user_id' => $user->id],
+            [
+                'skin_tone_level' => (int) $validated['skin_tone_level'],
+                'vein_color'      => $veinColor,
+                'undertone'       => $undertone,
+                'hue'             => $undertone === 'neutral' ? 'neutral' : $undertone,
+                'value'           => null,
+                'chroma'          => null,
+                'season'          => null,
+                'confidence'      => null,
             ]
         );
 

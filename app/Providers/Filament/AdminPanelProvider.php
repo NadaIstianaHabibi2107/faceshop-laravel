@@ -10,6 +10,7 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Support\Facades\FilamentView; // ✅ TAMBAH INI
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -23,9 +24,6 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        // Jangan chaining setelah ->login()
-        // karena di Filament v5 bisa "berubah konteks" jadi guard.
-
         $panel = $panel
             ->default()
             ->id('admin')
@@ -49,8 +47,11 @@ class AdminPanelProvider extends PanelProvider
                 for: 'App\\Filament\\Widgets'
             )
             ->widgets([
-                AccountWidget::class,
-                FilamentInfoWidget::class,
+            
+                // FilamentInfoWidget::class, // ❌ hapus ini biar card Filament hilang
+                \App\Filament\Widgets\SalesStats::class,
+                \App\Filament\Widgets\SalesChart7Days::class,
+                \App\Filament\Widgets\SalesChart30Days::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -67,9 +68,17 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ]);
 
-        // panggil login terpisah (hindari error SessionGuard::colors)
         $panel->login();
 
         return $panel;
+    }
+
+    // ✅ INI WAJIB, supaya script hexPicker kebaca oleh semua halaman admin
+    public function boot(): void
+    {
+        FilamentView::registerRenderHook(
+            'panels::body.end',
+            fn () => view('filament.hex-picker-scripts')
+        );
     }
 }

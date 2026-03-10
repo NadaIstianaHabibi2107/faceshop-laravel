@@ -8,49 +8,41 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
+            $table->id();
 
-            // kalau kolom-kolom ini belum ada, tambahkan
-            if (!Schema::hasColumn('orders', 'receiver_name')) {
-                $table->string('receiver_name', 120)->nullable()->after('user_id');
-            }
-            if (!Schema::hasColumn('orders', 'receiver_email')) {
-                $table->string('receiver_email', 120)->nullable()->after('receiver_name');
-            }
-            if (!Schema::hasColumn('orders', 'receiver_phone')) {
-                $table->string('receiver_phone', 30)->nullable()->after('receiver_email');
-            }
-            if (!Schema::hasColumn('orders', 'shipping_address')) {
-                $table->text('shipping_address')->nullable()->after('receiver_phone');
-            }
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnDelete();
 
-            // courier / pickup
-            if (!Schema::hasColumn('orders', 'delivery_method')) {
-                $table->enum('delivery_method', ['courier', 'pickup'])->default('courier')->after('shipping_address');
-            }
+            $table->string('order_code')->unique();
 
-            // catatan kecil: ongkir by kurir (informasi saja)
-            if (!Schema::hasColumn('orders', 'shipping_note')) {
-                $table->string('shipping_note', 255)->nullable()->after('delivery_method');
-            }
+            $table->unsignedInteger('total_price')->default(0);
 
-            // status lengkap (kamu bisa tambah sesuai kebutuhan admin)
-            // menunggu_verifikasi, diproses, dikirim, terkirim, ditolak
-            // (pastikan kolom status di orders sudah ada; kalau sudah, ini tidak menambah)
+            // status order sesuai yang kamu pakai di Filament
+            $table->enum('status', [
+                'menunggu_verifikasi',
+                'diproses',
+                'dikirim',
+                'selesai',
+                'dibatalkan',
+            ])->default('menunggu_verifikasi');
+
+            // shipping / receiver fields (langsung taruh di create, tanpa after())
+            $table->string('receiver_name', 120)->nullable();
+            $table->string('receiver_email', 120)->nullable();
+            $table->string('receiver_phone', 30)->nullable();
+
+            $table->text('shipping_address')->nullable();
+            $table->enum('delivery_method', ['courier', 'pickup'])->default('courier');
+            $table->string('shipping_note', 255)->nullable();
+
+            $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
-            $table->dropColumn([
-                'receiver_name',
-                'receiver_email',
-                'receiver_phone',
-                'shipping_address',
-                'delivery_method',
-                'shipping_note',
-            ]);
-        });
+        Schema::dropIfExists('orders');
     }
 };
